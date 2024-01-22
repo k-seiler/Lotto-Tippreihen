@@ -73,7 +73,7 @@ getZahlen(): Gibt die derzeit aktiven Unglückszahlen als Integer-Array zurück.
 Die Klasse UnglueckszahlenTest beinhaltet einige UnitTests für die verschiedenen Funktionalitäten der Unglueckszahlen-Klasse
 
 ### Logfile
-Die Klasse Logfile dient zur Erstellung einer Protokolldatei, in welcher der Programmablauf protokolliert wird. 
+Die Klasse Logfile dient zur Erstellung einer Protokolldatei, in welcher der letzte Programmablauf protokolliert wird. 
 
 **Attribute:**
 
