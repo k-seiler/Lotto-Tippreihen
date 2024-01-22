@@ -1,4 +1,4 @@
-package lotto;
+package lottoTippreihenGenerator;
 
 public class Eurojackpot extends LottoTippreihe {
 	LottoTippreihe bonuszahlen = new LottoTippreihe();

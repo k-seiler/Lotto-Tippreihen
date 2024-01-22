@@ -1,4 +1,4 @@
-package lotto;
+package lottoTippreihenGenerator;
 
 import java.util.Arrays;
 
@@ -38,6 +38,8 @@ public class LottoTippreihe implements Tippreihe {
 		}
 		
 		Arrays.sort(tipps);
+		
+		Logfile.logger.info("Neue Tippreihe generiert: " + tippAnzahl + " aus " + tippMaxwert);
 	}
 
 	public String ausgabe() {

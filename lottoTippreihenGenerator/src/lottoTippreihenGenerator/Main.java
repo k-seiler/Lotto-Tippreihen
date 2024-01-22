@@ -1,4 +1,4 @@
-package lotto;
+package lottoTippreihenGenerator;
 
 //Scanner zur Verarbeitung der Userinputs
 import java.util.Scanner;
@@ -12,24 +12,25 @@ public class Main {
 		
 		boolean beenden = false;
 		
-		
+		Logfile.init();
 		Unglueckszahlen.init();
+		
 		scanner = new Scanner(System.in);
 		
 		System.out.println("Willkommen zum Tippreihen-Generator");
 		
 		while(!beenden) {
 			
-		System.out.println(startRoutine().ausgabe());
-		
-		System.out.println("");
-		System.out.println();
-		System.out.println("Um eine neue Tippreihe zu generieren, geben Sie [" + INPUT_NEUETIPPREIHE + "] ein, ansonsten wird das Programm beendet");
-		String input = scanner.nextLine();
-		if(!input.equalsIgnoreCase(INPUT_NEUETIPPREIHE)) {
-			beenden = true;
-			scanner.close();
-		}
+			System.out.println(startRoutine().ausgabe());
+			
+			System.out.println("");
+			System.out.println();
+			System.out.println("Um eine neue Tippreihe zu generieren, geben Sie [" + INPUT_NEUETIPPREIHE + "] ein, ansonsten wird das Programm beendet");
+			String input = scanner.nextLine();
+			if(!input.equalsIgnoreCase(INPUT_NEUETIPPREIHE)) {
+				beenden = true;
+				scanner.close();
+			}
 		}
 		
 	}
@@ -52,6 +53,7 @@ public class Main {
 		while( tippreihe == null ) {
 		
 			input = scanner.nextLine();
+			Logfile.logger.info("Auswahl Lotto oder Eurojackpot - Userinput: " + input);
 			
 			if(input.equals("") || input.equalsIgnoreCase(INPUT_LOTTO)) {
 				System.out.println("Lotto-Tippreihe wird erstellt");
@@ -92,6 +94,8 @@ public class Main {
 			System.out.println("[" + INPUT_WEITER + "] - Weiter zur Tippreihe");
 			
 			String input = scanner.nextLine();
+			Logfile.logger.info("Optionswahl für die Unglückszahlen - Userinput: " + input);
+			
 			boolean fertig;
 			switch(input) {
 				case INPUT_HINZUFUEGEN:

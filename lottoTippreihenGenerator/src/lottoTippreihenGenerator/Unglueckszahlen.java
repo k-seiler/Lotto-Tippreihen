@@ -1,4 +1,4 @@
-package lotto;
+package lottoTippreihenGenerator;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -20,29 +20,38 @@ public class Unglueckszahlen {
 	public static void init() {
 		zahlen = new ArrayList<Integer>();
 		file = new File(DATEINAME);
+		boolean korrekteDatei = true;
 		
 		try {
-			if (!file.createNewFile()) {
-				
+			if (!file.createNewFile()) {				
 				Scanner scanner = new Scanner(file);
+				int i = 0;
 				
-				while (scanner.hasNextLine()) {
-					//TODO exception handling für falsche textfiles
+				while (scanner.hasNextLine() && i < MAX_ANZAHL) {
 					zahlen.add( Integer.parseInt( scanner.nextLine()));
+				}
+				
+				if(i == MAX_ANZAHL) {
+					korrekteDatei = false;
 				}
 				
 				scanner.close();
 				
 			} else {
-				System.out.println("file erstellt");
+				Logfile.logger.info("Unglückszahlen-Datei erstellt");
 			}
 			
 		} catch (IOException e) {
-			System.out.println("An error occurred.");
-			e.printStackTrace();
-			
+			Logfile.logger.warning("Fehler bei der Verarbeitung der Unglückszahlen-Datei: " + e.toString());
+			korrekteDatei = false;
+		} catch(NumberFormatException e) {
+			Logfile.logger.warning("Fehler: Ungültiger Wert in der Unglückszahlen-Datei");
+			korrekteDatei = false;
 		}
 		
+		if(!korrekteDatei) {
+			zahlen = new ArrayList<Integer>();
+		}
 		
 	}
 	
@@ -61,58 +70,71 @@ public class Unglueckszahlen {
 	}
 	
 	public static String hinzufuegen( String input ) {
+		Logfile.logger.info(ausgabe());
+		Logfile.logger.info("Input für neue Unglückszahl: " + input);
+		String ergebnis = "";
 		if( istVoll() ) {
-			return "Es können nicht mehr als " + MAX_ANZAHL + " Unglückszahlen gespeichert werden";
+			ergebnis = "Es können nicht mehr als " + MAX_ANZAHL + " Unglückszahlen gespeichert werden";
 		} else {
 			try {
 				int neueZahl = Integer.parseInt(input);
 				if( istEnthalten(neueZahl) ) {
-					return "Die Zahl " + neueZahl + " ist bereits als Unglückszahl gespeichert";
+					ergebnis = "Die Zahl " + neueZahl + " ist bereits als Unglückszahl gespeichert";
 				} else {
 					
 				if( neueZahl < MIN_WERT || neueZahl > MAX_WERT || istEnthalten(neueZahl) ) {
-					return "Die neue Unglückszahl muss zwischen " + MIN_WERT + " und " + MAX_WERT + " liegen";
+					ergebnis = "Die neue Unglückszahl muss zwischen " + MIN_WERT + " und " + MAX_WERT + " liegen";
 				} else {				
 					zahlen.add( neueZahl );
 					Collections.sort( zahlen );
 					speichern();
-					return "Unglückszahl " + neueZahl + " erfolgreich hinzugefügt";
+					ergebnis = "Unglückszahl " + neueZahl + " erfolgreich hinzugefügt";
 				}
 				}
 			}
 			catch (NumberFormatException e) {
-				//e.printStackTrace();
-				return "Ungültige Eingabe. Bitte geben Sie eine Zahl zwischen " + MIN_WERT + " und " + MAX_WERT + " ein";
+				ergebnis = "Ungültige Eingabe. Bitte geben Sie eine Zahl zwischen " + MIN_WERT + " und " + MAX_WERT + " ein";
 		}
 		
 		}
+		Logfile.logger.info("Ergebnis: " + ergebnis);
+		return ergebnis;
 	}
 	
 	public static void allesLoeschen() {
+		Logfile.logger.info("Alle Unglückszahlen gelöscht");
 		zahlen = new ArrayList<Integer>();
 		speichern();
 	}
 	
 	public static String entfernen( String input ) {
+		Logfile.logger.info("Ausgabe");
+		Logfile.logger.info("Input für zu löschende Unglückszahl: " + input);
+		
 		boolean geloescht = false;
+		String ergebnis = "";
+		
 		try {
 			int loeschWert = Integer.parseInt(input);
 			for( int i = 0; i < zahlen.size(); i++) {
 				if( loeschWert == zahlen.get(i) ) {
 					zahlen.remove(i);
+					speichern();
 					i = zahlen.size();
 					geloescht = true;
+					ergebnis = "Unglückszahl " + loeschWert + " erfolgreich gelöscht";
 				} 
 			}
-			if( geloescht ) {
-				return "Unglückszahl " + loeschWert + " erfolgreich gelöscht";
-			} else {
-				return "Die Zahl " + loeschWert + " ist nicht als Unglückszahl gespeichert";
+			if( !geloescht ) {
+				ergebnis = "Die Zahl " + loeschWert + " ist nicht als Unglückszahl gespeichert";
 			}
 		}
 		catch (NumberFormatException e) {
-			return "Ungültige Eingabe. Bitte geben sie die Unglückszahl ein, die gelöscht werden soll";
+			ergebnis = "Ungültige Eingabe. Bitte geben sie die Unglückszahl ein, die gelöscht werden soll";
 		}
+		
+		Logfile.logger.info("Ergebnis: " + ergebnis);
+		return ergebnis;
 	}
 	
 	private static void speichern() {
@@ -122,10 +144,9 @@ public class Unglueckszahlen {
 				printStream.println(zahlen.get(i));
 			}
 			printStream.close();
-			System.out.println("Successfully wrote to the file.");
+			Logfile.logger.info("Unglückszahlen-Datei erfolgreich aktualisiert");
 		} catch (IOException e) {
-			System.out.println("An error occurred.");
-			e.printStackTrace();
+			Logfile.logger.warning("Fehler beim Schreiben zur Unglückszahlen-Datei: " + e.toString());
 		}
 	}
 	
