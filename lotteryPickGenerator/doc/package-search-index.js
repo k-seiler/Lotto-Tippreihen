@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"logs"},{"l":"lotteryNumberClasses"},{"l":"main"},{"l":"unluckyNumbers"}];updateSearchResults();

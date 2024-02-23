@@ -1,0 +1,8 @@
+Feb. 23, 2024 11:53:53 AM logs.Logfile init
+INFORMATION: Programm gestartet
+Feb. 23, 2024 11:53:56 AM main.Main startRoutine
+INFORMATION: Auswahl Lotto oder Eurojackpot - Userinput: lott
+Feb. 23, 2024 11:54:04 AM main.Main startRoutine
+INFORMATION: Auswahl Lotto oder Eurojackpot - Userinput: lotto
+Feb. 23, 2024 11:54:08 AM main.Main unluckyNumberRoutine
+INFORMATION: Optionswahl für die Unglückszahlen - Userinput: 3
